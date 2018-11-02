@@ -1,0 +1,92 @@
+#! /usr/bin/env python
+import os
+import sys
+import csv
+import psycopg2
+
+# Try to connect
+
+
+def safe_utf(value):
+    return value.decode('utf-8','ignore').encode("utf-8")
+
+def default_date(value):
+    return value == "" and "01-01-1000" or value
+
+def main():
+    count = 0
+    filename=sys.argv[1]
+
+    with psycopg2.connect(os.environ.get("DATABASE_URL")) as conn:
+        cur = conn.cursor()
+        cur.execute("""delete from badgemanagement.badge;""")
+        with open(filename) as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                sql = """
+                INSERT INTO badgemanagement.badge (party_code,
+                    badge_no,
+                    badge_status,
+                    app_channel_code,
+                    start_date,
+                    expiry_date,
+                    deliver_to_code,
+                    deliver_option_code,
+                    holder_name,
+                    contact_building_street,
+                    contact_town_city,
+                    contact_postcode,
+                    contact_line2,
+                    primary_phone_no,
+                    local_authority_short_code,
+                    local_authority_ref,
+                    eligibility_code,
+                    nino,
+                    dob,
+                    gender_code,
+                    contact_name,
+                    secondary_phone_no,
+                    contact_email_address,
+                    holder_name_upper,
+                    cancel_reason_code,
+                    order_date,
+                    app_date) 
+                VALUES 
+                (%s,%s,%s,%s,%s,%s,'UNKNOWN','UNKNOWN',%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                """
+                val = (row["BadgeType"],
+                        row["BadgeNumber"],
+                        row["Status"],
+                        row["ApplicationSource"],
+                        row["StartDate"],
+                        row["ExpiryDate"],
+                        safe_utf(" ".join([row["FullNameForename"],row["FullNameOtherName"],row["FullNameSurname"]])),
+                        row["HomeAddressLine1"],
+                        row["HomeAddressTown"],
+                        row["HomeAddressPostcode"],
+                        " ".join([row["HomeAddressLine2"],row["HomeAddressLine3"],row["HomeAddressLine4"]]),
+                        row["PrimaryContactNumber"],
+                        row["LACode"],
+                        row["LAReference"],
+                        row["EligibilityCategory"],
+                        row["NationalInsuranceNumber"],
+                        default_date(row["DateOfBirth"]),
+                        row["Gender"],
+                        safe_utf(" ".join([row["ContactForename"],row["ContactOtherName"],row["ContactSurname"]])),
+                        row["SecondaryContactNumber"],
+                        row["EmailAddress"],
+                        safe_utf(" ".join([row["FullNameForename"],row["FullNameOtherName"],row["FullNameSurname"]])).upper(),
+                        row["CancellationReason"],
+                        default_date(row["OrderDate"]),
+                        default_date(row["ApplicationDate"]))
+
+
+                cur.execute(sql, val)
+                count = count +1
+
+    print("Processed {} records".format(count))
+
+if __name__ == '__main__':
+    main()
+
+
