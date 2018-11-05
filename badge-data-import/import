@@ -8,7 +8,7 @@ import psycopg2
 
 
 def safe_utf(value):
-    return value.decode('utf-8','ignore').encode("utf-8")
+    return value.decode('Windows-1252').encode("utf-8")
 
 def default_date(value):
     return value == "" and "01-01-1000" or value
