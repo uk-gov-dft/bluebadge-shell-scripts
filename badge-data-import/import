@@ -6,16 +6,19 @@ import psycopg2
 
 # Try to connect
 
-
 def safe_utf(value):
     return value.decode('Windows-1252').encode("utf-8")
 
 def default_date(value):
     return value == "" and "01-01-1000" or value
 
+def image_url(badge_number, bucket_name):
+    return "https://s3.eu-west-2.amazonaws.com/{0}/{1}/artefacts/{0}-thumbnail.jpg".format(badge_number, bucket_name)
+
 def main():
     count = 0
     filename=sys.argv[1]
+    bucket_name=sys.argv[2]
 
     with psycopg2.connect(os.environ.get("DATABASE_URL")) as conn:
         cur = conn.cursor()
@@ -50,9 +53,11 @@ def main():
                     holder_name_upper,
                     cancel_reason_code,
                     order_date,
-                    app_date) 
+                    app_date,
+                    image_link,
+                    image_link_original) 
                 VALUES 
-                (%s,%s,%s,%s,%s,%s,'UNKNOWN','UNKNOWN',%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                (%s,%s,%s,%s,%s,%s,'UNKNOWN','UNKNOWN',%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
                 """
                 val = (row["BadgeType"],
                         row["BadgeNumber"],
@@ -78,7 +83,9 @@ def main():
                         safe_utf(" ".join([row["FullNameForename"],row["FullNameOtherName"],row["FullNameSurname"]])).upper(),
                         row["CancellationReason"],
                         default_date(row["OrderDate"]),
-                        default_date(row["ApplicationDate"]))
+                        default_date(row["ApplicationDate"]),
+                        image_url(row["BadgeNumber"], bucket_name),
+                        image_url(row["BadgeNumber"], bucket_name))
 
 
                 cur.execute(sql, val)
