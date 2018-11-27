@@ -1,0 +1,7 @@
+for i in `find . -maxdepth 1 -not -name . | sed 's/\.\///g'`; 
+do 
+  PUBLIC_CODE="$(curl -sLI https://github.com/uk-gov-dft/bluebadge-$i | head -n1 | cut -d ' ' -f2)"
+  (cd $i && \
+    git checkout -q master > /dev/null || : && \
+    echo "$(grep -Eir "( ***REMOVED***);
+done;

@@ -1,0 +1,14 @@
+#! /bin/bash
+
+PUBLIC_CODE="$(curl -sI https://github.com/uk-gov-dft/$i.git | head -n1 | cut -d ' ' -f2)"
+
+PATTERN="(RSA PRIVATE KEY)|[^'\"]+( ***REMOVED***
+
+grep -irE "$PATTERN" ./
+
+for i in `git rev-list --all`;
+do 
+  git grep -E "$PATTERN" "$i"; 
+
+done;
+
