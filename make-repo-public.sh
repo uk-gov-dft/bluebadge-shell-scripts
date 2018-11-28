@@ -34,6 +34,7 @@ regex:([\w\-_]+secret(:|=)\s?)[^\s]+==>$1 ***REMOVED***
 ***REMOVED***
  ***REMOVED***
 regex:of.*' ***REMOVED***
+regex:***REMOVED***
 ***REMOVED***
 ***REMOVED***
 ***REMOVED***
