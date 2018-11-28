@@ -1,0 +1,1 @@
+curl -u $(cat ~/.ssh/jira_creds)  "https://uk-gov-dft.atlassian.net/rest/api/2/search?maxResults=2000" | jq '.issues[] | {id: .id, key: .key, data: .fields | {resolved:.resolutiondate,created:.created, type: .issuetype.name, status: .status.name, updated: .updated, creator: .creator.name, reporter: .reporter.name}}'
