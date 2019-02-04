@@ -1,4 +1,6 @@
-export DOCKER_IMAGE_NAME="$(git config --get remote.origin.url | sed -r 's/.*:([^\/]+)\/(.*$)/\1\/\2/'):$(git describe --abbrev=0)-$(git rev-parse --abbrev-ref HEAD)"
+#! /bin/bash
+
+export DOCKER_IMAGE_NAME="$(git config --get remote.origin.url | sed -r 's/.*github.com[\/\:]+([^\/]+)\/([^\.]+)(\.git)?/\1\/\2/'):$(git describe --abbrev=0)-$(git rev-parse --abbrev-ref HEAD)"
 export JAR_NAME="$(git config --get remote.origin.url | sed -r 's/.*:([^\/]+)\/(.*$)/\2/')-$(git describe --abbrev=0)-$(git rev-parse --abbrev-ref HEAD).jar"
 
 docker build -t "$DOCKER_IMAGE_NAME" --build-arg JAR_NAME="$JAR_NAME" .
