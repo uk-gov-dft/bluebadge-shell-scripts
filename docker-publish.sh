@@ -9,6 +9,11 @@ export REPO=$(sed -r "s/$PATTERN/\2/" <<< "$URL")
 export VERSION=$(git describe --abbrev=0)
 export BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
+export REPO=${APP_NAME:-$REPO}
+
+echo "REPO = $REPO"
+exit 1
+
 export DOCKER_IMAGE_NAME="$USER/$REPO:$VERSION-$BRANCH"
 export JAR_NAME="$REPO-$VERSION-$BRANCH.jar"
 
