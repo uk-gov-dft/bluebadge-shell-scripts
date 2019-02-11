@@ -24,7 +24,7 @@ docker tag "$DOCKER_IMAGE_NAME" "536084723381.dkr.ecr.eu-west-2.amazonaws.com/$D
 
 docker push "536084723381.dkr.ecr.eu-west-2.amazonaws.com/$DOCKER_IMAGE_NAME"
 
-if [ "$BRANCH_NAME" == "develop" ]; 
+if [ "$BRANCH_NAME" == "develop" ] || [ "$BRANCH_NAME" == "push-to-docker-registry"  ]; 
 then
   docker tag "$USER/$REPO:latest" "536084723381.dkr.ecr.eu-west-2.amazonaws.com/$USER/$REPO:latest"
   docker push "536084723381.dkr.ecr.eu-west-2.amazonaws.com/$USER/$REPO:latest"
