@@ -87,6 +87,13 @@ cd ..
 gradle acceptanceTests -Dheadless=true -DbaseUrl=${BASE_SELENIUM_URL:-http://localhost:8080}
 testExitCode=$?
 
+# Save the logs if something went wrong
+if [[ "$testExitCode" -ne 0 ]]; then
+   cd dev-env-$BRANCH_NAME
+   docker-compose logs -t --no-color > ../docker.log
+   cd ..
+fi
+
 # Tear down
 tearDown
 
