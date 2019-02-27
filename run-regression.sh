@@ -84,7 +84,7 @@ psql -h localhost -U developer -d bb_dev -f ./scripts/db/setup-users.sql
 
 # Run the acceptance tests
 cd ..
-gradle acceptanceTests
+gradle acceptanceTests -Dheadless=true -DbaseUrl=http://localhost:8080
 testExitCode=$?
 
 # Tear down
