@@ -20,6 +20,7 @@ if [ "$BRANCH_NAME" == "develop" ] || [ "$BRANCH_NAME" == "push-to-docker-regist
 then
   docker build -t "$DOCKER_IMAGE_NAME" -t "$USER/$REPO:latest" --build-arg JAR_NAME="$JAR_NAME" .
   docker tag "$USER/$REPO:latest" "536084723381.dkr.ecr.eu-west-2.amazonaws.com/$USER/$REPO:latest"
+  docker tag "$DOCKER_IMAGE_NAME" "536084723381.dkr.ecr.eu-west-2.amazonaws.com/$DOCKER_IMAGE_NAME"
 else
   docker build -t "$DOCKER_IMAGE_NAME" --build-arg JAR_NAME="$JAR_NAME" .
   docker tag "$DOCKER_IMAGE_NAME" "536084723381.dkr.ecr.eu-west-2.amazonaws.com/$DOCKER_IMAGE_NAME"
