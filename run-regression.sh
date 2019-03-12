@@ -91,8 +91,13 @@ testExitCode=$?
 
 # Save the logs if something went wrong
 # if [[ "$testExitCode" -ne 0 ]]; then
-cd dev-env-$BRANCH_NAME
-docker-compose logs -t --no-color > ../"$JOB_NAME-docker.log"
+if [[ "$testExitCode" -ne 0 ]]; then
+   cd dev-env-$BRANCH_NAME
+   docker-compose logs -t --no-color > ../docker.log
+   cd ..
+fi
+
+
 cd ..
 # fi
 
