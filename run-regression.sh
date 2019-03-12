@@ -82,6 +82,8 @@ docker-compose up -d --no-color
 ./wait_for_it.sh localhost:5432 localhost:8681:/manage/actuator/health localhost:8381:/manage/actuator/health localhost:8281:/manage/actuator/health localhost:8081:/manage/actuator/health localhost:8481:/manage/actuator/health localhost:8181:/manage/actuator/health localhost:8581:/manage/actuator/health
 psql -h localhost -U developer -d bb_dev -f ./scripts/db/setup-users.sql
 
+ssh-keyscan -p 2222 localhost > ~/.ssh/sftp_known_hosts
+
 # Run the acceptance tests
 cd ..
 gradle acceptanceTests -Dheadless=true -DbaseUrl=${BASE_SELENIUM_URL:-http://localhost:8080}
