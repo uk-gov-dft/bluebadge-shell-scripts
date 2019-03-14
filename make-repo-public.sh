@@ -11,7 +11,6 @@ gitdirname(){
 
 REPO="$(git config --get remote.origin.url)"
 DIR_NAME="$(gitdirname "$REPO")"
-
 cd $(mktemp -d)
 
 cat << EOF > /tmp/passwords.txt
