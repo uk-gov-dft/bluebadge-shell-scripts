@@ -13,8 +13,8 @@ export REPO=${APP_NAME:-$REPO}
 
 echo "REPO = $REPO"
 
-export DOCKER_IMAGE_NAME="$USER/$REPO:$VERSION-$BRANCH"
-export JAR_NAME="$REPO-$VERSION-$BRANCH.jar"
+export DOCKER_IMAGE_NAME="$USER/$REPO:$VERSION-${BRANCH/\//_}"
+export JAR_NAME="$REPO-$VERSION-${BRANCH/\//_}.jar"
 
 if [ "$BRANCH_NAME" == "develop" ]; 
 then
