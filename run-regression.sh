@@ -73,6 +73,16 @@ if ! [[ "$BRANCH_NAME" =~ ^develop.*|^release.* ]]; then
    . env-feature.sh
 fi
 
+export LA_DOCKER_VERSION=$(dockerVersion $LA_VERSION)
+export UM_DOCKER_VERSION=$(dockerVersion $UM_VERSION)
+export BB_DOCKER_VERSION=$(dockerVersion $BB_VERSION)
+export AP_DOCKER_VERSION=$(dockerVersion $AP_VERSION)
+export AZ_DOCKER_VERSION=$(dockerVersion $AZ_VERSION)
+export MG_DOCKER_VERSION=$(dockerVersion $MG_VERSION)
+export RD_DOCKER_VERSION=$(dockerVersion $RD_VERSION)
+export PR_DOCKER_VERSION=$(dockerVersion $PR_VERSION)
+export PY_DOCKER_VERSION=$(dockerVersion $PY_VERSION)
+
 outputVersions
 
 cd "dev-env-develop"
