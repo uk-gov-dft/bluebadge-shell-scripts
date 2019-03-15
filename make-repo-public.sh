@@ -13,6 +13,10 @@ REPO="$(git config --get remote.origin.url)"
 DIR_NAME="$(gitdirname "$REPO")"
 cd $(mktemp -d)
 
+if ! grep -q ".git" <<< "$DIR_NAME"; then
+  DIR_NAME="$DIR_NAME.git"
+fi
+
 cat << EOF > /tmp/passwords.txt
 does.not.exist==>does.not.exist
 does.not.exist==>does.not.exist
@@ -40,10 +44,12 @@ regex:***REMOVED***
 - ***REMOVED***
 EOF
 
+REPO_NAME_NO_GIT=${DIR_NAME/.git/}
+
 cat << EOF > /tmp/repository.json
 {
-  "name": "bluebadge-$DIR_NAME",
-  "description": "bluebadge-$DIR_NAME",
+  "name": "bluebadge-$REPO_NAME_NO_GIT",
+  "description": "bluebadge-$REPO_NAME_NO_GIT",
   "homepage": "https://github.com",
   "private": false,
   "has_issues": false,
@@ -59,8 +65,13 @@ cd "$DIR_NAME"
 bfg --no-blob-protection --private --replace-text /tmp/passwords.txt  ./
 git reflog expire --expire=now --all && git gc --prune=now --aggressive
 
+echo "deleteing https://api.github.com/repos/uk-gov-dft/bluebadge-$REPO_NAME_NO_GIT"
+
+curl -s -X DELETE -H "Authorization: Bearer $(cat ~/.ssh/github_token)" https://api.github.com/repos/uk-gov-dft/bluebadge-$REPO_NAME_NO_GIT
+
 curl -s -X POST -H "Authorization: Bearer $(cat ~/.ssh/github_token)" -d @/tmp/repository.json https://api.github.com/orgs/uk-gov-dft/repos
 
 git remote add public "git@github.com:uk-gov-dft/bluebadge-$DIR_NAME"
+
 git push public master
 
