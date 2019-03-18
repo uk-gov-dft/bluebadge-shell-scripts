@@ -88,7 +88,7 @@ outputVersions
 cd "dev-env-develop"
 bash load-modules.sh
 docker-compose build
-docker-compose up -d --no-color
+docker-compose up -d --no-color > ../docker.log
 ./wait_for_it.sh localhost:2222 localhost:5432 localhost:8681:/manage/actuator/health localhost:8381:/manage/actuator/health localhost:8281:/manage/actuator/health localhost:8081:/manage/actuator/health localhost:8481:/manage/actuator/health localhost:8181:/manage/actuator/health localhost:8581:/manage/actuator/health
 psql -h localhost -U developer -d bb_dev -f ./scripts/db/setup-users.sql
 psql -h localhost -U developer -d bb_dev -f ./scripts/db/rebase_la.sql -a
@@ -100,13 +100,6 @@ cd ..
 gradle acceptanceTests -Dheadless=true -DbaseUrl=${BASE_SELENIUM_URL:-http://localhost:8080}
 testExitCode=$?
 
-# Save the logs if something went wrong
-# if [[ "$testExitCode" -ne 0 ]]; then
-if [[ "$testExitCode" -ne 0 ]]; then
-   cd dev-env-develop
-   docker-compose logs -t --no-color > ../docker.log
-   cd ..
-fi
 
 
 cd ..
