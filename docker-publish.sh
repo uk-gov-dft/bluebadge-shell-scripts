@@ -23,18 +23,20 @@ then
   docker build -t "$DOCKER_IMAGE_NAME" -t "$USER/$REPO:latest" --build-arg JAR_NAME="$JAR_NAME" .
   docker tag "$USER/$REPO:latest" "536084723381.dkr.ecr.eu-west-2.amazonaws.com/$USER/$REPO:latest"
   docker tag "$DOCKER_IMAGE_NAME" "536084723381.dkr.ecr.eu-west-2.amazonaws.com/$DOCKER_IMAGE_NAME"
+  docker push "536084723381.dkr.ecr.eu-west-2.amazonaws.com/$USER/$REPO:latest"
+  docker push "536084723381.dkr.ecr.eu-west-2.amazonaws.com/$DOCKER_IMAGE_NAME"
 elif  [ "$BRANCH_NAME" == "master" ];
 then
   export JAR_NAME="$REPO-$VERSION.jar"
-  docker build -t "${DOCKER_IMAGE_NAME/-master/}" -t "$USER/$REPO:stable" --build-arg JAR_NAME="$JAR_NAME" .
-  docker tag "$USER/$REPO:latest" "536084723381.dkr.ecr.eu-west-2.amazonaws.com/$USER/$REPO:stable"
+  docker build -t "${DOCKER_IMAGE_NAME/-master/}" --build-arg JAR_NAME="$JAR_NAME" .
   docker tag "${DOCKER_IMAGE_NAME/-master/}" "536084723381.dkr.ecr.eu-west-2.amazonaws.com/${DOCKER_IMAGE_NAME/-master/}"
+  docker push "536084723381.dkr.ecr.eu-west-2.amazonaws.com/${DOCKER_IMAGE_NAME/-master/}"
 else
   docker build -t "$DOCKER_IMAGE_NAME" --build-arg JAR_NAME="$JAR_NAME" .
   docker tag "$DOCKER_IMAGE_NAME" "536084723381.dkr.ecr.eu-west-2.amazonaws.com/$DOCKER_IMAGE_NAME"
+  docker push "536084723381.dkr.ecr.eu-west-2.amazonaws.com/$DOCKER_IMAGE_NAME"
 fi
 
 
 
-docker push "536084723381.dkr.ecr.eu-west-2.amazonaws.com/$DOCKER_IMAGE_NAME"
 
