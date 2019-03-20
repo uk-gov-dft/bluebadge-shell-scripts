@@ -32,6 +32,10 @@ then
   docker tag "${DOCKER_IMAGE_NAME/-master/}" "536084723381.dkr.ecr.eu-west-2.amazonaws.com/${DOCKER_IMAGE_NAME/-master/}"
   docker push "536084723381.dkr.ecr.eu-west-2.amazonaws.com/${DOCKER_IMAGE_NAME/-master/}"
 else
+  # On branches, the JAR will usually be given a dumb name like
+  #   build/libs/85-replace-badge-validation-RSLQQA2ZCSZABOKZYXQNPTHDPWVVK3Q2GZFNC6NAHMAUZJSZLWPQ-v0.25.0-bugfix_BBB-1285-replace-badge-validation.jar
+  # so we use a greedy wildcard and hope that there's only a single JAR in build/libs.
+  export JAR_NAME="*-$VERSION-*.jar"
   docker build -t "$DOCKER_IMAGE_NAME" --build-arg JAR_NAME="$JAR_NAME" .
   docker tag "$DOCKER_IMAGE_NAME" "536084723381.dkr.ecr.eu-west-2.amazonaws.com/$DOCKER_IMAGE_NAME"
   docker push "536084723381.dkr.ecr.eu-west-2.amazonaws.com/$DOCKER_IMAGE_NAME"
