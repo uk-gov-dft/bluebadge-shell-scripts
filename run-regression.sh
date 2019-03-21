@@ -28,6 +28,7 @@ outputVersions() {
   echo "TARGET_ENV=$TARGET_ENV"
 
   echo "LA_VERSION=$LA_VERSION"
+  echo "CA_VERSION=$CA_VERSION"
   echo "UM_VERSION=$UM_VERSION"
   echo "BB_VERSION=$BB_VERSION"
   echo "AP_VERSION=$AP_VERSION"
@@ -37,6 +38,7 @@ outputVersions() {
   echo "PR_VERSION=$PR_VERSION"
   echo "PY_VERSION=$PY_VERSION"
   echo "LA_DOCKER_VERSION=$(dockerVersion $LA_VERSION)"
+  echo "CA_DOCKER_VERSION=$(dockerVersion $CA_VERSION)"
   echo "UM_DOCKER_VERSION=$(dockerVersion $UM_VERSION)"
   echo "BB_DOCKER_VERSION=$(dockerVersion $BB_VERSION)"
   echo "AP_DOCKER_VERSION=$(dockerVersion $AP_VERSION)"
@@ -70,10 +72,12 @@ gradle :outputComputedVersion
 
 . "dev-env-develop/env.sh"
 if ! [[ "$BRANCH_NAME" =~ ^develop.*|^release.* ]]; then
+   echo "Setting env-feature branches"
    . env-feature.sh
 fi
 
 export LA_DOCKER_VERSION=$(dockerVersion $LA_VERSION)
+export CA_DOCKER_VERSION=$(dockerVersion $CA_VERSION)
 export UM_DOCKER_VERSION=$(dockerVersion $UM_VERSION)
 export BB_DOCKER_VERSION=$(dockerVersion $BB_VERSION)
 export AP_DOCKER_VERSION=$(dockerVersion $AP_VERSION)
