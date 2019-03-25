@@ -57,7 +57,7 @@ if [[ ! -e ~/.ssh/github_token ]]; then
 fi
 
 # Cleanup existing containers
-tearDown
+# tearDown
 
 # Get the dev-env stuff
 echo "**************************** Retrieving dev-env (develop) scripts."
@@ -118,7 +118,7 @@ cd ..
 # fi
 
 # Tear down
-tearDown
+# tearDown
 
 echo "Exiting with code:$testExitCode"
 
