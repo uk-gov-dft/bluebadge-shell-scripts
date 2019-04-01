@@ -1,7 +1,18 @@
 #! /usr/bin/env bash
 # vim: filetype=sh
 
-CONTENT=$(cat <&0)
+display_help() {
+    echo "Usage: $0 [option...] < [content_file]" >&2
+    echo
+    echo "   -k, --project-key          The key of the confluence project"
+    echo "   -t, --title                The title of the page"
+    echo "   -a, --ancestor             The parent page id to create the new page under"
+    echo "   -i, --id                   The id of page to update"
+    echo "   -c, --creds-file           The credentials file in basic auth format.  default: ~/.ssh/jira_creds"
+    echo
+    # echo some stuff here for the -a or --add-options
+    exit 1
+}
 
 METHOD=POST
 CREDS_FILE=~/.ssh/jira_creds
@@ -14,13 +25,13 @@ while [ -n "$1" ]; do
        PAGE_TITLE="$2" ;;
       --ancestor|-a)
        ANCESTOR_ID="{'id':'$2'}" ;;
-      --file|-f)
-       FILE="$2" ;;
       --id|-i)
        ID="'id':'$2',"
        METHOD=PUT ;;
       --creds-file|-c)
        CREDS_FILE="$2" ;;
+      --help|-h)
+       display_help ;;
     * )
         ;;
     esac
@@ -37,6 +48,7 @@ if [[ -z "$PAGE_TITLE" ]]; then
   exit 1
 fi
 
+CONTENT=$(cat <&0)
 DATA="{$ID'type':'page','title':'$PAGE_TITLE','space':{'key':'$PROJECT_KEY'},'ancestors':[$ANCESTOR_ID],'body':{'storage':{'value':'$CONTENT','representation':'storage'}}}"
 
 echo -n "${DATA//\'/\"}" > /tmp/jira_upload
