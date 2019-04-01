@@ -48,14 +48,13 @@ if [[ -z "$PAGE_TITLE" ]]; then
   exit 1
 fi
 
-CONTENT=$(cat <&0)
+CONTENT=$(cat <&0 | sed -E ':a;N;$!ba;s/\r{0,1}\n/\\n/g' | sed 's/"/\\"/g')
+
 DATA="{$ID'type':'page','title':'$PAGE_TITLE','space':{'key':'$PROJECT_KEY'},'ancestors':[$ANCESTOR_ID],'body':{'storage':{'value':'$CONTENT','representation':'storage'}}}"
 
 echo -n "${DATA//\'/\"}" > ./jira_upload
 
-echo "JIRA UPLOAD CONTENT"
-
 cat ./jira_upload
 
-#curl -L -v -u $(cat "$CREDS_FILE") -X "$METHOD" -H 'Content-Type: application/json' -d @./jira_upload \
- #https://uk-gov-dft.atlassian.net/wiki/rest/api/content
+curl -L -v -u $(cat "$CREDS_FILE") -X "$METHOD" -H 'Content-Type: application/json' -d @./jira_upload \
+ https://uk-gov-dft.atlassian.net/wiki/rest/api/content
