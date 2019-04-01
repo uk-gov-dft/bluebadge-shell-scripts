@@ -9,6 +9,7 @@ display_help() {
     echo "   -a, --ancestor             The parent page id to create the new page under"
     echo "   -i, --id                   The id of page to update"
     echo "   -c, --creds-file           The credentials file in basic auth format.  default: ~/.ssh/jira_creds"
+    echo "   -u, --url                  The api URL"
     echo
     # echo some stuff here for the -a or --add-options
     exit 1
@@ -30,6 +31,8 @@ while [ -n "$1" ]; do
        METHOD=PUT ;;
       --creds-file|-c)
        CREDS_FILE="$2" ;;
+      --url|-u)
+       URL="$2" ;;
       --help|-h)
        display_help ;;
     * )
@@ -40,12 +43,12 @@ done
 
 if [[ -z "$PROJECT_KEY" ]]; then
   echo "Must supply project key"
-  exit 1
+  display_help
 fi
 
 if [[ -z "$PAGE_TITLE" ]]; then
   echo "Must supply page title"
-  exit 1
+  display_help
 fi
 
 CONTENT=$(cat <&0 | sed -E ':a;N;$!ba;s/\r{0,1}\n/\\n/g' | sed 's/"/\\"/g')
@@ -56,5 +59,4 @@ echo -n "${DATA//\'/\"}" > ./jira_upload
 
 cat ./jira_upload
 
-curl -L -v -u $(cat "$CREDS_FILE") -X "$METHOD" -H 'Content-Type: application/json' -d @./jira_upload \
- https://uk-gov-dft.atlassian.net/wiki/rest/api/content
+curl -L -v -u $(cat "$CREDS_FILE") -X "$METHOD" -H 'Content-Type: application/json' -d @./jira_upload "$URL"
