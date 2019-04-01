@@ -53,8 +53,8 @@ outputVersions() {
 
 set -a
 
-if [[ ! -e ~/.ssh/github_token ]]; then
-  echo "You need to create a personal access github token in ~/.ssh/github_token in order to access github"
+if [[ -z "$GITHUB_TOKEN" ]]; then
+  echo "Must set GITHUB_TOKEN environment variable"
   exit 1
 fi
 
@@ -63,7 +63,7 @@ fi
 
 # Get the dev-env stuff
 echo "**************************** Retrieving dev-env (develop) scripts."
-curl -sL -H "Authorization: token $(cat ~/.ssh/github_token)" "https://github.com/uk-gov-dft/dev-env/archive/develop.tar.gz" | tar xz
+curl -sL -H "Authorization: token $GITHUB_TOKEN" "https://github.com/uk-gov-dft/dev-env/archive/develop.tar.gz" | tar xz
 if [ $? -ne 0 ]; then
    echo "Cannot download dev-env (develop)!"
    exit 1
