@@ -1,0 +1,45 @@
+#! /usr/bin/env bash
+# vim: filetype=sh
+
+CONTENT=$(cat <&0)
+
+METHOD=POST
+CREDS_FILE=~/.ssh/jira_creds
+
+while [ -n "$1" ]; do
+    case "$1" in
+      --project-key|-k)
+       PROJECT_KEY="$2" ;;
+      --title|-t)
+       PAGE_TITLE="$2" ;;
+      --ancestor|-a)
+       ANCESTOR_ID="{'id':'$2'}" ;;
+      --file|-f)
+       FILE="$2" ;;
+      --id|-i)
+       ID="'id':'$2',"
+       METHOD=PUT ;;
+      --creds-file|-c)
+       CREDS_FILE="$2" ;;
+    * )
+        ;;
+    esac
+    shift
+done
+
+if [[ -z "$PROJECT_KEY" ]]; then
+  echo "Must supply project key"
+  exit 1
+fi
+
+if [[ -z "$PAGE_TITLE" ]]; then
+  echo "Must supply page title"
+  exit 1
+fi
+
+DATA="{$ID'type':'page','title':'$PAGE_TITLE','space':{'key':'$PROJECT_KEY'},'ancestors':[$ANCESTOR_ID],'body':{'storage':{'value':'$CONTENT','representation':'storage'}}}"
+
+echo -n "${DATA//\'/\"}" > /tmp/jira_upload
+
+curl -L -v -u $(cat "$CREDS_FILE") -X "$METHOD" -H 'Content-Type: application/json' -d @/tmp/jira_upload \
+ https://uk-gov-dft.atlassian.net/wiki/rest/api/content
