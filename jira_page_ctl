@@ -51,7 +51,11 @@ fi
 CONTENT=$(cat <&0)
 DATA="{$ID'type':'page','title':'$PAGE_TITLE','space':{'key':'$PROJECT_KEY'},'ancestors':[$ANCESTOR_ID],'body':{'storage':{'value':'$CONTENT','representation':'storage'}}}"
 
-echo -n "${DATA//\'/\"}" > /tmp/jira_upload
+echo -n "${DATA//\'/\"}" > ./jira_upload
 
-curl -L -v -u $(cat "$CREDS_FILE") -X "$METHOD" -H 'Content-Type: application/json' -d @/tmp/jira_upload \
- https://uk-gov-dft.atlassian.net/wiki/rest/api/content
+echo "JIRA UPLOAD CONTENT"
+
+cat ./jira_upload
+
+#curl -L -v -u $(cat "$CREDS_FILE") -X "$METHOD" -H 'Content-Type: application/json' -d @./jira_upload \
+ #https://uk-gov-dft.atlassian.net/wiki/rest/api/content
