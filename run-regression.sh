@@ -60,6 +60,10 @@ fi
 
 # Cleanup existing containers
 # tearDown
+docker-compose kill postgresql || :
+docker-compose rm -f postgresql || :
+docker-compose kill sftp-server || :
+docker-compose rm -f sftp-server || :
 
 # Get the dev-env stuff
 echo "**************************** Retrieving dev-env (develop) scripts."
