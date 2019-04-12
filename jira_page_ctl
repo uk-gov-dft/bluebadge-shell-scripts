@@ -51,7 +51,7 @@ if [[ -z "$PAGE_TITLE" ]]; then
   display_help
 fi
 
-CONTENT=$(cat <&0 | sed -E ':a;N;$!ba;s/\r{0,1}\n/\\n/g' | sed 's/"/\\"/g')
+CONTENT=$(cat <&0 | sed -E ':a;N;$!ba;s/\r{0,1}\n/\\n/g' | sed 's/"/\\"/g' | sed -r "s/'/\\\\'/g")
 
 DATA="{$ID'type':'page','title':'$PAGE_TITLE','space':{'key':'$PROJECT_KEY'},'ancestors':[$ANCESTOR_ID],'body':{'storage':{'value':'$CONTENT','representation':'storage'}}}"
 
