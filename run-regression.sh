@@ -119,7 +119,7 @@ ssh-keyscan -p 2222 localhost > ~/.ssh/sftp_known_hosts
 # Run the acceptance tests
 cd ..
 echo BASE_SELENIUM_URL=$BASE_SELENIUM_URL
-gradle acceptanceTests -Dheadless=true -DbaseUrl=${BASE_SELENIUM_URL:-http://localhost:8080}
+gradle acceptanceTests -Dheadless=true -DbaseUrl=${BASE_SELENIUM_URL:-http://localhost:8080} -DseleniumGrid=true
 testExitCode=$?
 
 # Save the logs if something went wrong
