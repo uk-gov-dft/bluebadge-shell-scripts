@@ -39,6 +39,7 @@ outputVersions() {
   echo "RD_VERSION=$RD_VERSION"
   echo "PR_VERSION=$PR_VERSION"
   echo "PY_VERSION=$PY_VERSION"
+  echo "CS_VERSION=$CS_VERSION"
   echo "LA_DOCKER_VERSION=$(dockerVersion $LA_VERSION)"
   echo "CA_DOCKER_VERSION=$(dockerVersion $CA_VERSION)"
   echo "UM_DOCKER_VERSION=$(dockerVersion $UM_VERSION)"
@@ -49,6 +50,7 @@ outputVersions() {
   echo "RD_DOCKER_VERSION=$(dockerVersion $RD_VERSION)"
   echo "PR_DOCKER_VERSION=$(dockerVersion $PR_VERSION)"
   echo "PY_DOCKER_VERSION=$(dockerVersion $PY_VERSION)"
+  echo "CS_DOCKER_VERSION=$(dockerVersion $CS_VERSION)"
 }
 
 set -a
@@ -88,6 +90,7 @@ export MG_DOCKER_VERSION=$(dockerVersion $MG_VERSION)
 export RD_DOCKER_VERSION=$(dockerVersion $RD_VERSION)
 export PR_DOCKER_VERSION=$(dockerVersion $PR_VERSION)
 export PY_DOCKER_VERSION=$(dockerVersion $PY_VERSION)
+export CS_DOCKER_VERSION=$(dockerVersion $CS_VERSION)
 
 outputVersions
 
@@ -109,7 +112,8 @@ docker-compose up -d --no-color
   localhost:8081:/manage/actuator/health \
   localhost:8481:/manage/actuator/health \
   localhost:8181:/manage/actuator/health \
-  localhost:8581:/manage/actuator/health
+  localhost:8581:/manage/actuator/health \
+  localhost:9181:/manage/actuator/health
 
 psql -h localhost -U developer -d bb_dev -f ./scripts/db/setup-users.sql
 psql -h localhost -U developer -d bb_dev -f ./scripts/db/rebase_la.sql -a
