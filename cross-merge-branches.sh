@@ -15,7 +15,8 @@ APPLICATIONS=( \
   MG,message-service \
   RD,referencedata-service \
   PR,print-service \
-  PY,payment-service
+  PY,payment-service \
+  CS, crypto-service
 )
 
 cd $(mktemp -d)
