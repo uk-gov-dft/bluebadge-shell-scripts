@@ -1,0 +1,22 @@
+  selenium:
+      image:
+          elgalu/selenium
+  zalenium:
+      image: “dosel/zalenium”
+          container_name: zalenium
+          hostname: zalenium
+          tty: true
+          volumes:
+              - /var/run/docker.sock:/var/run/docker.sock
+              - /usr/bin/docker:/usr/bin/docker
+          ports:
+              - 4444:4444
+          command: >
+          start --desiredContainers 4
+              --maxDockerSeleniumContainers 4
+               --videoRecordingEnabled false
+              --sauceLabsEnabled false
+              --browserStackEnabled false
+              --testingBotEnabled false
+              --cbtEnabled false
+              --startTunnel false
