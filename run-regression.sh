@@ -65,7 +65,7 @@ fi
 
 # Get the dev-env stuff
 echo "**************************** Retrieving dev-env (develop) scripts."
-curl -sL -H "Authorization: token $GITHUB_TOKEN" "https://github.com/uk-gov-dft/dev-env/archive/develop.tar.gz" | tar --skip-old-files xz
+curl -sL -H "Authorization: token $GITHUB_TOKEN" "https://github.com/uk-gov-dft/dev-env/archive/develop.tar.gz" | tar --skip-old-files -x -z
 if [ $? -ne 0 ]; then
    echo "Cannot download dev-env (develop)!"
    exit 1
