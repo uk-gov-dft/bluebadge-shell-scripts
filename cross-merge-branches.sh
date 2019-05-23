@@ -1,6 +1,9 @@
 #! /bin/bash
 set -e
 
+# cross-merge-branches.sh release/44 master --commit
+# cross-merge-branches.sh release/44 develop --commit
+
 FROM_BRANCH="$1"
 TO_BRANCH="$2"
 COMMIT="$3"
@@ -16,7 +19,7 @@ APPLICATIONS=( \
   RD,referencedata-service \
   PR,print-service \
   PY,payment-service \
-  CS, crypto-service
+  CS,crypto-service
 )
 
 cd $(mktemp -d)
@@ -28,11 +31,11 @@ do
 
   echo "Cloning $NAME ..."
 
-  git clone --quiet "https://$GITHUB_TOKEN:x-oauth-basic@github.com/uk-gov-dft/$NAME.git" > /dev/null
+  git clone --quiet "git@github.com:uk-gov-dft/$NAME.git" > /dev/null
   cd "$NAME"
   git checkout -q "$TO_BRANCH" > /dev/null
   git pull --no-edit origin "$FROM_BRANCH"
-  
+
   if [ "$COMMIT" == "--commit" ]; then
     git push origin "$TO_BRANCH"
   fi
