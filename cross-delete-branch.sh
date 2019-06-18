@@ -28,7 +28,7 @@ do
   SHORTCODE=$(echo -n "$application" | cut -d, -f1)
   NAME=$(echo -n "$application" | cut -d, -f2)
 
-  git clone --depth=1 --quiet "https://$GITHUB_TOKEN:x-oauth-basic@github.com/uk-gov-dft/$NAME.git" > /dev/null
+  git clone --depth=1 --quiet "git@github.com:uk-gov-dft/$NAME.git" > /dev/null
   cd "$NAME"
   
   git branch -D "$BRANCH" > /dev/null || :

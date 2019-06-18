@@ -75,7 +75,7 @@ fi
 gradle :outputComputedVersion
 
 . "dev-env-develop/env.sh"
-if ! [[ "$BRANCH_NAME" =~ ^develop.*|^release.* ]]; then
+  if [[ "$BRANCH_NAME" =  "release/45a" || !  "$BRANCH_NAME" =~ ^develop.*|^release.*  ]]; then
    echo "Setting env-feature branches"
    . env-feature.sh
 fi
